@@ -88,3 +88,37 @@ def login(usuario: Usuario):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# --- OBTENER CASAS ---
+@app.get("/casas")
+def get_casas():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT nombre FROM casas")
+    res = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return res
+
+# --- OBTENER PRODUCTOS DE UNA CASA ---
+@app.get("/productos/{casa_id}")
+def get_productos(casa_id: int):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM productos WHERE casa_id = %s", (casa_id,))
+    res = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return res
+
+# --- AGREGAR PRODUCTO ---
+@app.post("/productos/agregar")
+def agregar_producto(prod: dict): # {nombre, casa_id}
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO productos (nombre, casa_id) VALUES (%s, %s)", 
+                   (prod['nombre'], prod['casa_id']))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status": "ok"}
