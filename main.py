@@ -13,7 +13,7 @@ def get_db_connection():
             host=os.getenv('MYSQLHOST'),
             user=os.getenv('MYSQLUSER'),
             password=os.getenv('MYSQLPASSWORD'),
-            database=os.getenv('MYSQLDATABASE'),
+            database=os.getenv('MYSQL_DATABASE'),
             port=os.getenv('MYSQLPORT'),
             # Aiven requiere SSL. Si da error, intenta comentar esta línea
             ssl_disabled=False 
