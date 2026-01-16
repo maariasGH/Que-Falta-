@@ -122,3 +122,19 @@ def agregar_producto(prod: dict): # {nombre, casa_id}
     cursor.close()
     conn.close()
     return {"status": "ok"}
+
+# --- ELIMINAR PRODUCTO (REABASTECIDO) ---
+@app.delete("/productos/{producto_id}")
+def eliminar_producto(producto_id: int):
+    conn = get_db_connection()
+    if conn is None:
+        raise HTTPException(status_code=500, detail="Error de conexión")
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM productos WHERE id = %s", (producto_id,))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return {"status": "success", "mensaje": "Producto eliminado"}
+    except Exception as e:
+        return {"status": "error", "mensaje": str(e)}
