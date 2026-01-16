@@ -94,7 +94,7 @@ def login(usuario: Usuario):
 def get_casas():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT nombre FROM casas")
+    cursor.execute("SELECT * FROM casas")
     res = cursor.fetchall()
     cursor.close()
     conn.close()
